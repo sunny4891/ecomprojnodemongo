@@ -1,9 +1,25 @@
-function getCategories(req, res) {
-  res.status(200).json({ message: "Categories Get api" });
+const Joi = require("joi");
+const { Category } = require("../models/category");
+
+async function getCategories(req, res) {
+  const category = await Category.find().select("_id name");
+  res.status(200).json({ data: category });
 }
 
-function postCategories(req, res) {
-  res.status(200).json({ message: "Categories POST api" });
+async function postCategories(req, res, next) {
+  const schema = Joi.object({
+    name: Joi.string().min(4).max(40).required(),
+  });
+  const result = schema.validate(req.body);
+  if (result.error) {
+    res.status(401);
+    return next(new Error(result.error.message));
+  }
+  let category = result.value;
+  category = await new Category(result.value).save();
+  res
+    .status(200)
+    .json({ data: category, message: "Data created successfully" });
 }
 
 function putCategories(req, res) {

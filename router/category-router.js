@@ -5,6 +5,7 @@ const {
   putCategories,
   deleteCategories,
 } = require("../controller/categories-controller");
+const { adminAuthMiddleware } = require("../middlewares/user-auth-middleware");
 
 const categoryRouter = express.Router();
 
@@ -12,7 +13,7 @@ categoryRouter.get("/", getCategories);
 
 categoryRouter.get("/:id", getCategories);
 
-categoryRouter.post("/", postCategories);
+categoryRouter.post("/", adminAuthMiddleware, postCategories);
 
 categoryRouter.put("/:id", putCategories);
 

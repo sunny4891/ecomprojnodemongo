@@ -26,14 +26,15 @@ function adminAuthMiddleware(req, res, next) {
       req.session = { user: payload };
 
       if (payload?.isAdmin) {
-        next();
+        return next();
       } else {
         res.status(401);
         return res.json({ error: "You are not authorised to access resource" });
       }
+    } else {
+      res.status(401);
+      return res.json({ error: "Invalid Token" });
     }
-    res.status(401);
-    return res.json({ error: "Invalid Token" });
   } catch (error) {
     console.log(error);
     res.status(401);
