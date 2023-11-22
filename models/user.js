@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 // mongoose
 //   .connect("mongodb://127.0.0.1:27017/ecomproj", {
 //     useNewUrlParser: true,
-//     useUnifiedTopology: true,
+//     useUnifiedTopology: true,  34
 //   })
 //   .then((res) => console.log("...connected"))
 //   .catch((error) => console.log(error));
@@ -14,8 +14,8 @@ const userSchema = new Schema(
     phone: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    // userType: { type: String, required: true },
-    active: { type: Boolean, required: true, default: false },
+    isAdmin: { type: Boolean, default: false },
+    active: { type: Boolean, required: true, default: true },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
