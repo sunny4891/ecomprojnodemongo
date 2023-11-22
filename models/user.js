@@ -22,6 +22,12 @@ const userSchema = new Schema(
   }
 );
 
+userSchema.statics.isExists = async function isExists(email) {
+  let user = await this.findOne({ email });
+  console.log(user?.email);
+  return user ? true : false;
+};
+
 const User = mongoose.model("user", userSchema);
 
 module.exports = { User };

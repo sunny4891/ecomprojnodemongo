@@ -4,7 +4,9 @@ const {
   postUser,
   putUser,
   deleteUser,
+  loginUser,
 } = require("../controller/users-controllers");
+const { userAuthMiddleware } = require("../middlewares/user-auth-middleware");
 const userRouter = express.Router();
 
 userRouter.get("/", getUser);
@@ -13,7 +15,9 @@ userRouter.get("/:id", getUser);
 
 userRouter.post("/", postUser);
 
-userRouter.put("/:id", putUser);
+userRouter.post("/login", loginUser);
+
+userRouter.put("/:id", userAuthMiddleware, putUser);
 
 userRouter.delete("/:id", deleteUser);
 
