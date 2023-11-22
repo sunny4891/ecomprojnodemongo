@@ -111,6 +111,19 @@ async function putUser(req, res, next) {
   }
 }
 
+async function updateUserById(req, res, next) {
+  const user_id = req.params.id;
+
+  const user = await User.findOneAndUpdate(
+    { _id: user_id },
+    {
+      $set: req.body,
+    },
+    { new: true }
+  );
+  res.status(200).json(user);
+}
+
 function deleteUser(req, res) {
   res.status(200).json({ message: "User Delete api" });
 }
@@ -121,4 +134,5 @@ module.exports = {
   putUser,
   deleteUser,
   loginUser,
+  updateUserById,
 };
