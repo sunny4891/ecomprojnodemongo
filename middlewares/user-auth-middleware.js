@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
+const { JWT_KEY } = process.env;
 
 function userAuthMiddleware(req, res, next) {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (token) {
-      const payload = jwt.verify(token, "JWTSECRATEKEY_1234");
+      const payload = jwt.verify(token, JWT_KEY);
       req.session = { user: payload };
     } else {
       res.status(401);
@@ -22,7 +23,7 @@ function adminAuthMiddleware(req, res, next) {
   try {
     const token = req?.headers?.authorization?.split(" ")[1];
     if (token) {
-      const payload = jwt.verify(token, "JWTSECRATEKEY_1234");
+      const payload = jwt.verify(token, JWT_KEY);
       req.session = { user: payload };
 
       if (payload?.isAdmin) {

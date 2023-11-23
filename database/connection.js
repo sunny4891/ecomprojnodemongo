@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const DB_URL = "mongodb://127.0.0.1:27017/ecomproj";
+const { DB_URL } = process.env;
 
 async function createConnection() {
-  console.log("creating connection");
   const connection = await mongoose
     .connect(DB_URL, {
       useNewUrlParser: true,
