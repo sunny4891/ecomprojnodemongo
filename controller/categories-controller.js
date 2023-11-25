@@ -1,9 +1,30 @@
 const Joi = require("joi");
 const { Category } = require("../models/category");
+const { Product } = require("../models/product");
 
-async function getCategories(req, res) {
-  const category = await Category.find().select("_id name");
-  res.status(200).json({ data: category });
+async function getCategories(req, res, next) {
+  try {
+    const products = req?.params?.products;
+    const _id = req?.params?.id;
+
+    if (!_id) {
+      const category = await Category.find().select("_id name");
+      return res.status(200).json({ category });
+    }
+    if (_id && !products) {
+      const category = await Category.findOne({ _id }).select("_id name");
+      return res.status(200).json({ category });
+    }
+    if (_id && products === "products") {
+      const product = await Product.find({ category: _id }).populate(
+        "category"
+      );
+      return res.status(200).json({ product });
+    }
+    return next(new Error("No Data Found"));
+  } catch (err) {
+    return next(new Error("No Data Found"));
+  }
 }
 
 async function postCategories(req, res, next) {

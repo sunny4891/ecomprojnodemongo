@@ -44,7 +44,7 @@ async function loginUser(req, res, next) {
         isAdmin: user.isAdmin,
         email: user.email,
       };
-      const token = jwt.sign(payload, "JWTSECRATEKEY_1234");
+      const token = jwt.sign(payload, process.env.JWT_KEY);
       return res.status(200).json({ mmessage: "Login Success", token });
     }
   }

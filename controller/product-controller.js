@@ -3,8 +3,14 @@ const { UPLOAD_FOLDER } = process.env;
 const { Product } = require("../models/product");
 
 async function getProduct(req, res) {
-  const product = await Product.find();
-  res.status(200).json({ product });
+  const _id = req.params.id;
+  let product = "";
+  if (!_id) {
+    product = await Product.find();
+  } else {
+    product = await Product.findOne({ _id });
+  }
+  return res.status(200).json({ product });
 }
 
 function productValidation(data) {

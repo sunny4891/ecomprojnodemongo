@@ -3,7 +3,6 @@ const morgan = require("morgan");
 //enviorment variable configuration
 require("dotenv").config();
 console.log(process.env.DB_URL);
-
 const { UPLOAD_FOLDER } = process.env;
 const { createConnection } = require("./database/connection");
 const errorHandler = require("./middlewares/error-handler");
@@ -15,8 +14,10 @@ const testRouter = require("./test");
 const app = express();
 const apiRouter = express.Router();
 
-app.listen("5000", () => {
-  console.log("my server is running on port number 5000");
+app.listen(process.env.PORT || 3000, () => {
+  console.log(
+    `my server is running on port number ${process.env.PORT || 3000}`
+  );
 });
 app.use(morgan("dev"));
 app.use(express.json());

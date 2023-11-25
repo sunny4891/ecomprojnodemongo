@@ -13,6 +13,8 @@ categoryRouter.get("/", getCategories);
 
 categoryRouter.get("/:id", getCategories);
 
+categoryRouter.get("/:id/:products", getCategories);
+
 categoryRouter.post("/", adminAuthMiddleware, postCategories);
 
 categoryRouter.put("/:id", putCategories);
