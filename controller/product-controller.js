@@ -2,15 +2,23 @@ const Joi = require("joi");
 const { UPLOAD_FOLDER } = process.env;
 const { Product } = require("../models/product");
 
-async function getProduct(req, res) {
+async function getProduct(req, res, next) {
   const _id = req.params.id;
+  const { limit, page } = req.query;
+  let pageSize = parseInt(limit) || 5;
+  let pageNumber = parseInt(page) || 1;
+  let sort_by = req.query.sort;
+  const skip = pageSize * (pageNumber - 1);
   let product = "";
   if (!_id) {
-    product = await Product.find();
+    product = await Product.find().sort(sort_by).skip(skip).limit(pageSize);
   } else {
     product = await Product.findOne({ _id });
   }
-  return res.status(200).json({ product });
+  const count = await Product.countDocuments();
+
+  return res.status(200).json({ product, count });
+  return next(new Error("somthing went wrong."));
 }
 
 function productValidation(data) {

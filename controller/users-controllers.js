@@ -3,8 +3,16 @@ const Joi = require("joi");
 const passwordHash = require("password-hash");
 const jwt = require("jsonwebtoken");
 
-function getUser(req, res) {
-  res.status(200).json({ message: "User Get api" });
+async function getUser(req, res, next) {
+  const { limit, page } = req.query;
+  let pageSize = parseInt(limit) || 5;
+  let pageNumber = parseInt(page) || 1;
+  let sort_by = req.query.sort;
+  const skip = pageSize * (pageNumber - 1);
+  const user = await User.find().sort(sort_by).skip(skip).limit(pageSize);
+  const count = await User.countDocuments();
+  return res.status(200).json({ user, count });
+  return next(new Error("invalid input"));
 }
 
 function validateUserForRegistration(userData) {
