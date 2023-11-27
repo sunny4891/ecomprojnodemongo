@@ -1,6 +1,7 @@
 const express = require("express");
 const errorHandler = require("./middlewares/error-handler");
-
+const helmet = require("helmet");
+const cors = require("cors");
 require("express-async-errors");
 const morgan = require("morgan");
 //enviorment variable configuration
@@ -28,6 +29,8 @@ Promise.reject(new Error("From Promise"));
 const apiRouter = express.Router();
 
 app.use(morgan("dev"));
+// app.use(helmet());
+app.use(cors());
 app.use(express.json());
 createConnection();
 
@@ -51,5 +54,5 @@ apiRouter.get("/" + UPLOAD_FOLDER + "/*", (req, res, next) => {
 
 app.use(apiRouter);
 app.use(errorHandler);
-
+console.log("server.js");
 module.exports = { app };

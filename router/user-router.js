@@ -14,7 +14,7 @@ const {
 } = require("../middlewares/user-auth-middleware");
 const userRouter = express.Router();
 
-userRouter.get("/", getUser);
+userRouter.get("/", adminAuthMiddleware, getUser);
 
 userRouter.get("/:id", getUser);
 
